@@ -147,7 +147,7 @@ public class SquareComponent extends JComponent {
 
     private String getInputWithAccessSpecifier(String prompt) {
         JPanel panel = new JPanel(new GridLayout(3, 1));
-        JComboBox<String> accessSpecifierBox = new JComboBox<>(new String[]{"+ Public", "_ Private", "# Protected"});
+        JComboBox<String> accessSpecifierBox = new JComboBox<>(new String[]{"+ Public", "- Private", "# Protected"});
         JTextField inputField = new JTextField();
 
         panel.add(new JLabel(prompt));

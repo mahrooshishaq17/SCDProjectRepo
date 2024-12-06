@@ -14,4 +14,7 @@ class UMLComponentView extends JPanel {
         JLabel label = new JLabel(type);
         add(label);
     }
+
+    UMLComponentView() {
+    }
 }
