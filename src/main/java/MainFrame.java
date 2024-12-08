@@ -24,7 +24,7 @@ public class MainFrame extends JFrame {
         // Initialize Panels
         diagramEditorPanel = new DiagramEditorPanel();
         //propertiesPanel = new PropertiesPanel();
-        projectManagerPanel = new ProjectManagerPanel();
+        projectManagerPanel = new ProjectManagerPanel(diagramEditorPanel,diagramDrawer,this);
         diagramDrawer = new UMLDiagramDrawer();
 
         diagramDrawer = new UMLDiagramDrawer();

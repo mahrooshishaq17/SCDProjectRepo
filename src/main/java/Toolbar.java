@@ -422,7 +422,7 @@ public class Toolbar extends JPanel {
     }
 
     private void writeDescription(Line line, DiagramEditorPanel diagramEditorPanel) {
-        String description = JOptionPane.showInputDialog(diagramEditorPanel, "Enter description for the " + line.getClass().getSimpleName() + ":");
+        String description = JOptionPane.showInputDialog(diagramEditorPanel, "Enter description:");
         if (description != null && !description.trim().isEmpty()) {
             line.setDescription(description);  // Set the description for the line
         }
