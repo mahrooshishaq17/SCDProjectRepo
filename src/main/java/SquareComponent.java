@@ -10,10 +10,13 @@ public class SquareComponent extends JComponent {
     private int width, height;
     private Point dragStartPoint = null;
     private boolean resizing = false;
+    private boolean isAbstract = false;  // Flag to track if the class is abstract
+
 
     private String className = "Class Name";
     private final List<String> attributes = new ArrayList<>();
     private final List<String> methods = new ArrayList<>();
+    private final JPopupMenu contextMenu;
 
     public SquareComponent(int x, int y, int width, int height) {
         this.setBounds(x, y, width, height);
@@ -21,6 +24,36 @@ public class SquareComponent extends JComponent {
         this.height = height;
         this.setBackground(Color.getHSBColor(0, 0.0f, 97.3f));
         this.setOpaque(true);
+
+        // Create the context menu
+        contextMenu = new JPopupMenu();
+
+        // Add "Remove Class" menu item
+        JMenuItem removeClassItem = new JMenuItem("Remove Class");
+        removeClassItem.addActionListener(e -> removeClass());
+        contextMenu.add(removeClassItem);
+
+        // Add "Make Abstract" menu item
+        JMenuItem makeAbstractItem = new JMenuItem("Make Abstract");
+        makeAbstractItem.addActionListener(e -> makeAbstract());
+        contextMenu.add(makeAbstractItem);
+
+        // Add mouse listener to detect right-click
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (e.isPopupTrigger()) {
+                    showContextMenu(e);
+                }
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                if (e.isPopupTrigger()) {
+                    showContextMenu(e);
+                }
+            }
+        });
 
         addMouseListener(new MouseAdapter() {
             @Override
@@ -51,6 +84,28 @@ public class SquareComponent extends JComponent {
                 }
             }
         });
+    }
+    private void showContextMenu(MouseEvent e) {
+        contextMenu.show(SquareComponent.this, e.getX(), e.getY());
+    }
+
+    // Action when "Remove Class" is selected
+    private void removeClass() {
+        // Logic to remove the class (e.g., remove it from the parent container or editor)
+        Container parent = getParent();  // Get parent container (e.g., diagram editor)
+        if (parent != null) {
+            parent.remove(SquareComponent.this);  // Remove this component from the container
+            parent.revalidate();  // Revalidate the container
+            parent.repaint();     // Repaint the container to reflect changes
+        }
+        //System.out.println("Class Removed");
+    }
+
+    // Action when "Make Abstract" is selected
+    private void makeAbstract() {
+        // Change the className font to italics to make it appear as abstract
+        isAbstract = true;  // Mark the class as abstract
+        repaint();
     }
     public void addAttribute(String attribute) {
         attributes.add(attribute);
@@ -183,8 +238,9 @@ public class SquareComponent extends JComponent {
         g2d.drawLine(0, compartmentHeight, width, compartmentHeight);  // Class name divider
         g2d.drawLine(0, 2 * compartmentHeight, width, 2 * compartmentHeight);  // Attributes divider
 
-        // Draw the class name
-        g2d.setFont(new Font("Arial", Font.BOLD, 14));
+        // Draw the class name with the appropriate font
+        Font classFont = isAbstract ? new Font("Arial", Font.ITALIC, 14) : new Font("Arial", Font.BOLD, 14);
+        g2d.setFont(classFont);
         g2d.drawString(className, 10, compartmentHeight / 2);
 
         // Draw attributes
@@ -202,6 +258,7 @@ public class SquareComponent extends JComponent {
             y += 15;  // Increment y for the next method
         }
     }
+
 
 
     private void drawCenteredText(Graphics2D g2d, String text, int yStart, int yEnd) {

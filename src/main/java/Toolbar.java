@@ -11,6 +11,7 @@ public class Toolbar extends JPanel {
     private InheritanceLine  currentInheritanceLine;
     private AggregationLine currentAggregationLine;
     private CompositionLine currentCompositionLine;
+    private DirectedAssociation currentDirectedAssociation;
     private String activeTool=null;
 
 
@@ -31,9 +32,9 @@ public class Toolbar extends JPanel {
         // Add buttons based on diagram type
         if ("Class Diagram".equals(diagramType)) {
             addToolButton("Class");
-            addToolButton("Abstract Class");
             addToolButton("Interface");
             addToolButton("Association");
+            addToolButton("Directed Association");
             addToolButton("Inheritance");
             addToolButton("Aggregation");
             addToolButton("Composition");
@@ -41,7 +42,6 @@ public class Toolbar extends JPanel {
             addToolButton("Package");
             addToolButton("Access");
             addToolButton("Import");
-
 
         }
 
@@ -94,6 +94,11 @@ public class Toolbar extends JPanel {
             case "Composition":
                 if (activeTool != null) startCompositionLine();
                 break;
+            case "Directed Association":
+               // if (activeTool != null)
+                    startDirectedAssociation();
+                break;
+
 
             // Code to handle "Inheritance" button click
             //System.out.println("Inheritance button clicked");
@@ -113,6 +118,51 @@ public class Toolbar extends JPanel {
                 System.out.println("Unknown button clicked: " + label);
         }
     }
+    private void startDirectedAssociation() {
+        currentDirectedAssociation = null; // Reset before starting a new line
+        diagramEditorPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                for (DirectedAssociation line : diagramEditorPanel.getDirectedAssociations()) {
+                    if (line.isOnStart(e.getPoint()) || line.isOnEnd(e.getPoint()) || line.isOnLine(e.getPoint())) {
+                        // Set the clicked line as the current line
+                        currentDirectedAssociation = line;
+                        currentDirectedAssociation.startResizing(e.getPoint());
+                        currentDirectedAssociation.startMoving(e.getPoint());
+                        return;
+                    }
+                }
+
+                // If no existing line is clicked, create a new one
+                currentDirectedAssociation = new DirectedAssociation(e.getPoint(), diagramEditorPanel);
+                diagramEditorPanel.add(currentDirectedAssociation);
+                diagramEditorPanel.repaint();
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                if (SwingUtilities.isLeftMouseButton(e) && currentDirectedAssociation != null) {
+                    currentDirectedAssociation.stopResizing();
+                    currentDirectedAssociation = null; // Reset after use
+                    diagramEditorPanel.repaint();
+                }
+            }
+        });
+
+        diagramEditorPanel.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                if (currentDirectedAssociation != null) {
+                    currentDirectedAssociation.updateEndPoint(e.getPoint());
+                    diagramEditorPanel.repaint();
+                }
+            }
+        });
+    }
+
+
+
     private void startAssociationLine() {
         // Reset any existing lines
         currentAssociationLine = null;
@@ -166,11 +216,25 @@ public class Toolbar extends JPanel {
         diagramEditorPanel.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                if (SwingUtilities.isLeftMouseButton(e)) {
-                    currentInheritanceLine = new InheritanceLine(e.getPoint(), diagramEditorPanel);
-                    diagramEditorPanel.add(currentInheritanceLine);
-                    diagramEditorPanel.repaint();
+                for (InheritanceLine line : diagramEditorPanel.getInheritanceLines()) {
+                    if (line.isOnStart(e.getPoint()) || line.isOnEnd(e.getPoint()) || line.isOnLine(e.getPoint())) {
+                        // Set the clicked line as the current line
+                        currentInheritanceLine = line;
+                        currentInheritanceLine.startResizing(e.getPoint());
+                        currentInheritanceLine.startMoving(e.getPoint());
+                        return;
+                    }
                 }
+
+                // If no existing line is clicked, create a new one
+                currentInheritanceLine = new InheritanceLine(e.getPoint(), diagramEditorPanel);
+                diagramEditorPanel.add(currentInheritanceLine);
+                diagramEditorPanel.repaint();
+//                if (SwingUtilities.isLeftMouseButton(e)) {
+//                    currentInheritanceLine = new InheritanceLine(e.getPoint(), diagramEditorPanel);
+//                    diagramEditorPanel.add(currentInheritanceLine);
+//                    diagramEditorPanel.repaint();
+//                }
             }
 
             @Override
@@ -199,11 +263,25 @@ public class Toolbar extends JPanel {
         diagramEditorPanel.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                if (SwingUtilities.isLeftMouseButton(e)) {
-                    currentAggregationLine = new AggregationLine(e.getPoint(), diagramEditorPanel);
-                    diagramEditorPanel.add(currentAggregationLine);
-                    diagramEditorPanel.repaint();
+                for (AggregationLine line : diagramEditorPanel.getAggregationLines()) {
+                    if (line.isOnStart(e.getPoint()) || line.isOnEnd(e.getPoint()) || line.isOnLine(e.getPoint())) {
+                        // Set the clicked line as the current line
+                        currentAggregationLine = line;
+                        currentAggregationLine.startResizing(e.getPoint());
+                        currentAggregationLine.startMoving(e.getPoint());
+                        return;
+                    }
                 }
+
+                // If no existing line is clicked, create a new one
+                currentAggregationLine = new AggregationLine(e.getPoint(), diagramEditorPanel);
+                diagramEditorPanel.add(currentAggregationLine);
+                diagramEditorPanel.repaint();
+//                if (SwingUtilities.isLeftMouseButton(e)) {
+//                    currentInheritanceLine = new InheritanceLine(e.getPoint(), diagramEditorPanel);
+//                    diagramEditorPanel.add(currentInheritanceLine);
+//                    diagramEditorPanel.repaint();
+//                }
             }
 
             @Override
@@ -231,11 +309,25 @@ public class Toolbar extends JPanel {
         diagramEditorPanel.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                if (SwingUtilities.isLeftMouseButton(e)) {
-                    currentCompositionLine = new CompositionLine(e.getPoint(), diagramEditorPanel);
-                    diagramEditorPanel.add(currentCompositionLine);
-                    diagramEditorPanel.repaint();
+                for (CompositionLine line : diagramEditorPanel.getCompositionLines()) {
+                    if (line.isOnStart(e.getPoint()) || line.isOnEnd(e.getPoint()) || line.isOnLine(e.getPoint())) {
+                        // Set the clicked line as the current line
+                        currentCompositionLine = line;
+                        currentCompositionLine.startResizing(e.getPoint());
+                        currentCompositionLine.startMoving(e.getPoint());
+                        return;
+                    }
                 }
+
+                // If no existing line is clicked, create a new one
+                currentCompositionLine = new CompositionLine(e.getPoint(), diagramEditorPanel);
+                diagramEditorPanel.add(currentCompositionLine);
+                diagramEditorPanel.repaint();
+//                if (SwingUtilities.isLeftMouseButton(e)) {
+//                    currentInheritanceLine = new InheritanceLine(e.getPoint(), diagramEditorPanel);
+//                    diagramEditorPanel.add(currentInheritanceLine);
+//                    diagramEditorPanel.repaint();
+//                }
             }
 
             @Override
@@ -305,7 +397,7 @@ public class Toolbar extends JPanel {
     private void showContextMenu(Point point, Line line) {
         JPopupMenu contextMenu = new JPopupMenu();
 
-        JMenuItem removeItem = new JMenuItem("Remove " + line.getClass().getSimpleName());
+        JMenuItem removeItem = new JMenuItem("Remove line");
         removeItem.addActionListener(e -> removeLine(line));
 
         JMenuItem descriptionItem = new JMenuItem("Write Description");

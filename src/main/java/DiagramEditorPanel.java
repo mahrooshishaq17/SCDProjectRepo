@@ -9,6 +9,8 @@ public class DiagramEditorPanel extends JComponent {
     private List<InheritanceLine> inheritanceLines = new ArrayList<>();
     private List<AggregationLine> AggregationLines=new ArrayList<>();
     private List<CompositionLine> CompositionLines=new ArrayList<>();
+    private List<DirectedAssociation> DirectedAssociations=new ArrayList<>();
+
 
 
     public DiagramEditorPanel() {
@@ -25,7 +27,10 @@ public class DiagramEditorPanel extends JComponent {
     public List<CompositionLine> getCompositionLines() {
         return CompositionLines;
     }
-    public void removeAssociationLine(AssociationLine line) {
+    public List<DirectedAssociation> getDirectedAssociations()
+    {
+        return DirectedAssociations;
+    }public void removeAssociationLine(AssociationLine line) {
         associationLines.remove(line);  // Remove the association line from the list
         repaint();  // Repaint the panel to reflect the changes
     }
@@ -47,6 +52,9 @@ public class DiagramEditorPanel extends JComponent {
             line.draw(g);
         }
         for (CompositionLine line : CompositionLines) {
+            line.draw(g);
+        }
+        for (DirectedAssociation line : DirectedAssociations) {
             line.draw(g);
         }
     }
@@ -93,6 +101,17 @@ public class DiagramEditorPanel extends JComponent {
         CompositionLines.remove(line);
         repaint();
     }
+    public void add(DirectedAssociation line) {
+        DirectedAssociations.add(line);
+        repaint();
+    }
+
+    public void removeDirectedAssociation(DirectedAssociation line) {
+        DirectedAssociations.remove(line);
+        repaint();
+    }
+
+
 
 
 
