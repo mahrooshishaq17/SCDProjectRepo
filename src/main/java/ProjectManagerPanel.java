@@ -81,7 +81,7 @@ public class ProjectManagerPanel extends JPanel {
         // Clear the respective diagram contents based on the selected type
         if ("Class Diagram".equals(currentDiagramType)) {
             // Clear Class Diagram
-            diagramEditorPanel.clear();
+            diagramEditorPanel.clearAll();
             diagramEditorPanel.removeAll();
             diagramEditorPanel.revalidate();
             diagramEditorPanel.repaint();

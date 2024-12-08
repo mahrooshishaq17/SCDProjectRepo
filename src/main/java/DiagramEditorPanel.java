@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class DiagramEditorPanel extends JPanel {
     private List<AssociationLine> associationLines = new ArrayList<>();
     private List<DescriptionLabel> descriptionLabels = new ArrayList<>();// List to store DescriptionLabels
@@ -139,6 +140,18 @@ public class DiagramEditorPanel extends JPanel {
         inheritanceLines.clear();
         AggregationLines.clear();
         CompositionLines.clear();
+        descriptionLabels.clear();
+        removeAll();
+        // Optionally reset other states (e.g., zoom level, selection)
+        revalidate();
+        repaint();
+    }
+    public void clearAll() {
+        associationLines.clear();
+        inheritanceLines.clear();
+        AggregationLines.clear();
+        CompositionLines.clear();
+        DirectedAssociations.clear();
         descriptionLabels.clear();
         removeAll();
         // Optionally reset other states (e.g., zoom level, selection)
