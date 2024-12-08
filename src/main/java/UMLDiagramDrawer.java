@@ -2,6 +2,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class UMLDiagramDrawer extends JPanel {
@@ -191,6 +192,7 @@ public class UMLDiagramDrawer extends JPanel {
 
         add(drawingPanel, BorderLayout.CENTER);
     }
+
     public JButton getPackageButton() {
         return packageButton;
     }
@@ -332,6 +334,33 @@ public class UMLDiagramDrawer extends JPanel {
         int y2 = (int) (end.y - arrowSize * Math.sin(angle + Math.PI / 6));
         g2d.drawLine(end.x, end.y, x1, y1);
         g2d.drawLine(end.x, end.y, x2, y2);
+    }
+
+    public BufferedImage exportToImage() {
+        // Get the width and height of the component
+        int width = this.getWidth();
+        int height = this.getHeight();
+
+        // Create a new BufferedImage with the width and height of the panel
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+
+        // Get the graphics object of the image
+        Graphics2D g2d = image.createGraphics();
+
+        // Call the paintComponent method to paint the content onto the image
+        this.paint(g2d);  // The paint method of JPanel is responsible for rendering the content
+        g2d.dispose();    // Dispose of the graphics object to release resources
+
+        return image;     // Return the generated image
+    }
+
+    public void clearAll() {
+        components.clear();
+        relationships.clear();
+        removeAll();
+        // Optionally reset other states (e.g., zoom level, selection)
+        revalidate();
+        repaint();
     }
 }
 
