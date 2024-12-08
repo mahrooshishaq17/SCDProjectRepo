@@ -11,10 +11,14 @@ public class InheritanceLine extends JComponent implements Line {
     private String description;
     private DescriptionLabel descriptionLabel;
     private DiagramEditorPanel diagramEditorPanel;
+    public boolean resizingStart, resizingEnd;
+    public boolean moving;
+    private Point initialClick;
 
     public InheritanceLine(Point startPoint, DiagramEditorPanel diagramEditorPanel) {
         this.startPoint = startPoint;
         this.endPoint = startPoint;
+        this.moving = false;
         this.diagramEditorPanel = diagramEditorPanel;
 
         // Use final variables for MouseListener, MouseMotionListener
@@ -99,6 +103,19 @@ public class InheritanceLine extends JComponent implements Line {
         double d1 = startPoint.distance(point) + point.distance(endPoint);
         return Math.abs(d1 - lineLength) < 5;
     }
+    public void startResizing(Point p) {
+        if (isOnStart(p)) {
+            resizingStart = true;
+        } else if (isOnEnd(p)) {
+            resizingEnd = true;
+        }
+    }
+    public void startMoving(Point p) {
+        if (!isOnStart(p) && !isOnEnd(p)) {  // Ensure it's not on the start/end point
+            moving = true;
+            initialClick = p;
+        }
+    }
 
     public boolean isOnStart(Point point) {
         return startPoint.distance(point) < 5;
@@ -126,5 +143,7 @@ public class InheritanceLine extends JComponent implements Line {
     }
 
 
-
+    public void moveLine(Point point) {
+        updateEndPoint(point);
+    }
 }

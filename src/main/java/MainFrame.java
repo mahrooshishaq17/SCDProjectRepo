@@ -10,7 +10,10 @@ public class MainFrame extends JFrame {
     private ProjectManagerPanel projectManagerPanel;
     private JComboBox<String> diagramTypeSelector;
     private UMLDiagramDrawer diagramDrawer;
+
+
     private String CurrentDiagram;
+
 
     public MainFrame() {
         setTitle("UML Editor");
@@ -21,9 +24,13 @@ public class MainFrame extends JFrame {
         // Initialize Panels
         diagramEditorPanel = new DiagramEditorPanel();
         //propertiesPanel = new PropertiesPanel();
+        projectManagerPanel = new ProjectManagerPanel();
+        diagramDrawer = new UMLDiagramDrawer();
+
         diagramDrawer = new UMLDiagramDrawer();
 
         projectManagerPanel = new ProjectManagerPanel(diagramEditorPanel,diagramDrawer,this);
+
 
         // Initialize Toolbar
         toolbar = new Toolbar(diagramEditorPanel);
@@ -60,7 +67,9 @@ public class MainFrame extends JFrame {
             topPanel.removeAll();
 
             if ("Class Diagram".equals(selectedDiagram)) {
+
                 CurrentDiagram="Class Diagram";
+
                 // Remove package diagram and add class diagram components
                 remove(diagramDrawer);
                 add(diagramEditorPanel, BorderLayout.CENTER);
@@ -71,7 +80,10 @@ public class MainFrame extends JFrame {
                 topPanel.add(diagramTypeSelector, BorderLayout.WEST);
                 topPanel.add(toolbar, BorderLayout.CENTER);  // Show class diagram toolbar
             } else if ("Package Diagram".equals(selectedDiagram)) {
+
+
                 CurrentDiagram="Package Diagram";
+
                 // Remove class diagram and add package diagram components
                 remove(diagramEditorPanel);
                 add(diagramDrawer, BorderLayout.CENTER);

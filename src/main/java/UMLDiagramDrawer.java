@@ -266,7 +266,9 @@ public class UMLDiagramDrawer extends JPanel {
     }
 
     private void renameComponent(UMLComponent component, String componentType) {
-        String newName = JOptionPane.showInputDialog(this, "Enter " + componentType + " name:", component.getName());
+
+      // String newName = getInputWithAccessSpecifier("Enter Name:");
+       String newName = JOptionPane.showInputDialog(this, "Enter " + componentType + " name:", component.getName());
         if (newName != null && !newName.trim().isEmpty()) {
             component.setName(newName);
             if (component instanceof UMLPackage) {
@@ -275,6 +277,28 @@ public class UMLDiagramDrawer extends JPanel {
             repaint();
         }
     }
+    private String getInputWithAccessSpecifier(String prompt) {
+        JPanel panel = new JPanel(new GridLayout(3, 1));
+        JComboBox<String> accessSpecifierBox = new JComboBox<>(new String[]{"+ Public", "- Private"});
+        JTextField inputField = new JTextField();
+
+        panel.add(new JLabel(prompt));
+        panel.add(accessSpecifierBox);
+        panel.add(inputField);
+
+        int result = JOptionPane.showConfirmDialog(this, panel, "Package Name", JOptionPane.OK_CANCEL_OPTION);
+        if (result == JOptionPane.OK_OPTION) {
+            String accessSpecifier = (String) accessSpecifierBox.getSelectedItem();
+            String accessSymbol = accessSpecifier.split(" ")[0];
+            String input = inputField.getText().trim();
+
+            if (!input.isEmpty()) {
+                return accessSymbol + " " + input;
+            }
+        }
+        return null;
+    }
+
 
 
     private void showAddOptions(MouseEvent e) {
@@ -460,6 +484,8 @@ class UMLClass extends UMLComponent {
         super(x, y);
         this.name = name;
     }
+
+
 
     @Override
     public void draw(Graphics g, boolean isSelected) {

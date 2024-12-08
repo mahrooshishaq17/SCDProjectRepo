@@ -10,6 +10,8 @@ public class DiagramEditorPanel extends JPanel {
     private List<InheritanceLine> inheritanceLines = new ArrayList<>();
     private List<AggregationLine> AggregationLines=new ArrayList<>();
     private List<CompositionLine> CompositionLines=new ArrayList<>();
+    private List<DirectedAssociation> DirectedAssociations=new ArrayList<>();
+
 
 
     public DiagramEditorPanel() {
@@ -27,7 +29,10 @@ public class DiagramEditorPanel extends JPanel {
     public List<CompositionLine> getCompositionLines() {
         return CompositionLines;
     }
-    public void removeAssociationLine(AssociationLine line) {
+    public List<DirectedAssociation> getDirectedAssociations()
+    {
+        return DirectedAssociations;
+    }public void removeAssociationLine(AssociationLine line) {
         associationLines.remove(line);  // Remove the association line from the list
         repaint();  // Repaint the panel to reflect the changes
     }
@@ -49,6 +54,9 @@ public class DiagramEditorPanel extends JPanel {
             line.draw(g);
         }
         for (CompositionLine line : CompositionLines) {
+            line.draw(g);
+        }
+        for (DirectedAssociation line : DirectedAssociations) {
             line.draw(g);
         }
     }
@@ -95,9 +103,23 @@ public class DiagramEditorPanel extends JPanel {
         CompositionLines.remove(line);
         repaint();
     }
+
+    public void add(DirectedAssociation line) {
+        DirectedAssociations.add(line);
+        repaint();
+    }
+
+    public void removeDirectedAssociation(DirectedAssociation line) {
+        DirectedAssociations.remove(line);
+        repaint();
+    }
+
+
+
     public BufferedImage exportToImage() {
         int width = this.getWidth();
         int height = this.getHeight();
+
 
         // Create a new BufferedImage with the width and height of the panel
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
