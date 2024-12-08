@@ -28,6 +28,7 @@ public class Toolbar extends JPanel {
         // Clear existing buttons
         removeAll();
         currentButtons.clear();
+        // Clear existing buttons in UMLDiagramDrawer (if necessary)
 
         // Add buttons based on diagram type
         if ("Class Diagram".equals(diagramType)) {
@@ -39,10 +40,11 @@ public class Toolbar extends JPanel {
             addToolButton("Aggregation");
             addToolButton("Composition");
         } else if ("Package Diagram".equals(diagramType)) {
-            addToolButton("Package");
-            addToolButton("Access");
-            addToolButton("Import");
 
+          
+
+            // Transfer the buttons to UMLDiagramDrawer
+            //SwingUtilities.invokeLater(() -> new UMLDiagramDrawer().setVisible(true)
         }
 
         // Refresh UI
@@ -58,7 +60,6 @@ public class Toolbar extends JPanel {
         this.revalidate();
         this.repaint();
     }
-
     private void handleButtonClick(String label) {
         if(activeTool==null || !activeTool.equals(label))
             activeTool=label;
@@ -103,17 +104,17 @@ public class Toolbar extends JPanel {
             // Code to handle "Inheritance" button click
             //System.out.println("Inheritance button clicked");
             //break;
-            case "Package":
-                // Code to handle "Package" button click
-
-                //System.out.println("Package button clicked");
-                break;
-            case "Import":
-                // Code to handle "Dependency" button click
-                System.out.println("Dependency button clicked");
-                break;
-            case "Access":
-                break;
+//            case "Package":
+//                // Code to handle "Package" button click
+//
+//                //System.out.println("Package button clicked");
+//                break;
+//            case "Import":
+//                // Code to handle "Dependency" button click
+//                System.out.println("Dependency button clicked");
+//                break;
+//            case "Access":
+//                break;
             default:
                 System.out.println("Unknown button clicked: " + label);
         }
